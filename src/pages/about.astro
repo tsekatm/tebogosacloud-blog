@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+---
+
+<BaseLayout title="About" description="Cloud architect and engineering leader with deep expertise in AWS, DevOps, and building scalable platforms.">
+  <section class="container-narrow py-16 md:py-24">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row gap-10 items-start mb-16">
+      <img
+        src="/headshot.jpg"
+        alt="Tebogo Tseka"
+        class="w-40 h-40 rounded-2xl object-cover border-2 border-brand-beige/20 shadow-xl"
+      />
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-brand-light mb-4">About Me</h1>
+        <p class="text-lg text-brand-grey leading-relaxed">
+          I'm Tebogo Tseka — a cloud architect and engineering leader who builds scalable, production-grade platforms on AWS.
+          I write about the technical decisions, patterns, and leadership lessons that come with shipping real systems at scale.
+        </p>
+      </div>
+    </div>
+
+    <!-- Story -->
+    <div class="prose prose-lg max-w-none mb-16">
+      <h2>My Journey</h2>
+      <p>
+        <!-- TODO: Replace with your actual story -->
+        My path into cloud engineering started with a curiosity about how systems work at scale.
+        Over the years, I've designed and delivered platforms that serve thousands of users,
+        managed multi-account AWS environments, and led engineering teams through complex
+        architectural transformations.
+      </p>
+      <p>
+        Today, I focus on the intersection of cloud architecture, DevOps automation, and
+        engineering leadership — helping teams build systems that are resilient, observable,
+        and maintainable.
+      </p>
+
+      <h2>What I Do</h2>
+      <ul>
+        <li><strong>Cloud Architecture</strong> — Multi-account AWS environments, serverless-first designs, event-driven architectures</li>
+        <li><strong>DevOps & Platform Engineering</strong> — CI/CD pipelines, Infrastructure as Code (Terraform), observability</li>
+        <li><strong>Engineering Leadership</strong> — Team mentorship, architectural decision-making, technical strategy</li>
+        <li><strong>GenAI & AI Engineering</strong> — Building AI-powered products on AWS Bedrock</li>
+      </ul>
+
+      <h2>Why This Blog</h2>
+      <p>
+        I started this blog to share the lessons I've learned building real systems —
+        not textbook theory, but practical insights from production.
+        If you're on the path to senior engineering roles, I hope you find something
+        useful here.
+      </p>
+    </div>
+
+    <!-- Skills / Expertise -->
+    <div class="mb-16">
+      <h2 class="section-heading mb-8">Expertise</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        {[
+          { area: 'AWS Cloud', skills: ['EC2', 'Lambda', 'ECS', 'CloudFront', 'S3', 'DynamoDB', 'Cognito', 'Bedrock'] },
+          { area: 'DevOps', skills: ['Terraform', 'GitHub Actions', 'Docker', 'CI/CD', 'Monitoring'] },
+          { area: 'Architecture', skills: ['Serverless', 'Event-Driven', 'Multi-Tenant', 'Microservices'] },
+          { area: 'Leadership', skills: ['Team Lead', 'Technical Strategy', 'Mentorship', 'Stakeholder Management'] },
+        ].map(({ area, skills }) => (
+          <div class="card">
+            <h3 class="text-sm font-semibold text-brand-beige uppercase tracking-wider mb-3">{area}</h3>
+            <div class="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <span class="badge">{skill}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="border-t border-brand-border pt-12">
+      <Newsletter />
+    </div>
+  </section>
+</BaseLayout>

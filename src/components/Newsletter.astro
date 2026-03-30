@@ -1,0 +1,50 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={[compact ? '' : 'text-center']}>
+  {!compact && (
+    <div class="mb-6">
+      <h3 class="text-xl font-bold text-brand-light">Stay in the loop</h3>
+      <p class="text-brand-grey mt-2 max-w-md mx-auto">
+        Get notified when I publish new articles on cloud architecture, DevOps, and technical leadership.
+      </p>
+    </div>
+  )}
+
+  <!-- ConvertKit Form -->
+  <!-- Replace YOUR_FORM_ID with your actual ConvertKit form ID -->
+  <form
+    action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions"
+    method="post"
+    class:list={[
+      'flex gap-3',
+      compact ? 'flex-col sm:flex-row' : 'flex-col sm:flex-row justify-center max-w-md mx-auto',
+    ]}
+  >
+    <input
+      type="email"
+      name="email_address"
+      placeholder="your@email.com"
+      required
+      class="flex-1 px-4 py-3 rounded-lg bg-brand-muted border border-brand-border text-brand-cream
+             placeholder:text-brand-grey/60 focus:outline-none focus:border-brand-beige/50
+             focus:ring-1 focus:ring-brand-beige/30 text-sm"
+    />
+    <button
+      type="submit"
+      class="px-6 py-3 rounded-lg bg-brand-beige text-brand-black font-semibold text-sm
+             hover:bg-brand-cream transition-colors whitespace-nowrap"
+    >
+      Subscribe
+    </button>
+  </form>
+
+  {!compact && (
+    <p class="text-xs text-brand-grey/60 mt-3">No spam. Unsubscribe anytime.</p>
+  )}
+</div>

@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = [
+  'All',
+  'AWS & Cloud Architecture',
+  'DevOps & Infrastructure',
+  'GenAI & AI Engineering',
+  'Cloud Security',
+  'Career & Leadership',
+  'Technical Deep Dives',
+];
+---
+
+<BaseLayout title="Blog" description="Articles on AWS architecture, DevOps, AI engineering, cloud security, and technical leadership.">
+  <section class="container-wide py-16 md:py-24">
+    <div class="mb-12">
+      <h1 class="section-heading text-4xl">Blog</h1>
+      <p class="section-subheading text-lg mt-3">
+        Deep dives into cloud architecture, DevOps practices, AI engineering, and the journey to senior technical leadership.
+      </p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="flex flex-wrap gap-2 mb-10" id="category-filter">
+      {categories.map((cat) => (
+        <button
+          data-category={cat}
+          class:list={[
+            'px-4 py-2 text-sm rounded-lg border transition-colors cursor-pointer',
+            cat === 'All'
+              ? 'bg-brand-beige text-brand-black border-brand-beige'
+              : 'bg-transparent text-brand-grey border-brand-border hover:border-brand-beige/50 hover:text-brand-cream',
+          ]}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    {allPosts.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
+        {allPosts.map((post) => (
+          <div data-category={post.data.category}>
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              slug={post.slug}
+              heroImage={post.data.heroImage}
+              tags={post.data.tags}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="card max-w-lg mx-auto text-center">
+        <p class="text-4xl mb-4">&#128221;</p>
+        <h2 class="text-xl font-bold text-brand-light mb-2">No posts yet</h2>
+        <p class="text-brand-grey">First articles are on the way. Check back soon.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll('#category-filter button');
+  const posts = document.querySelectorAll('#posts-grid > div');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+
+      // Update active button
+      buttons.forEach((b) => {
+        b.classList.remove('bg-brand-beige', 'text-brand-black', 'border-brand-beige');
+        b.classList.add('bg-transparent', 'text-brand-grey', 'border-brand-border');
+      });
+      btn.classList.remove('bg-transparent', 'text-brand-grey', 'border-brand-border');
+      btn.classList.add('bg-brand-beige', 'text-brand-black', 'border-brand-beige');
+
+      // Filter posts
+      posts.forEach((post) => {
+        if (category === 'All' || post.getAttribute('data-category') === category) {
+          (post as HTMLElement).style.display = '';
+        } else {
+          (post as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

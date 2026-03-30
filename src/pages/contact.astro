@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import Newsletter from '../components/Newsletter.astro';
+---
+
+<BaseLayout title="Contact" description="Get in touch for speaking engagements, collaborations, or just to connect.">
+  <section class="container-narrow py-16 md:py-24">
+    <div class="mb-12">
+      <h1 class="section-heading text-4xl">Get in Touch</h1>
+      <p class="section-subheading text-lg mt-3">
+        Whether it's a speaking invitation, collaboration, or just a conversation about cloud tech — I'd love to hear from you.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Contact Methods -->
+      <div class="space-y-6">
+        <div class="card">
+          <h3 class="text-lg font-bold text-brand-light mb-2">Speaking & Events</h3>
+          <p class="text-sm text-brand-grey mb-4">
+            Available for conferences, meetups, webinars, and workshops on AWS, DevOps, AI, and engineering leadership.
+          </p>
+          <a href="mailto:hello@tebogosacloud.blog" class="link-underline text-sm">
+            hello@tebogosacloud.blog
+          </a>
+        </div>
+
+        <div class="card">
+          <h3 class="text-lg font-bold text-brand-light mb-2">Connect</h3>
+          <p class="text-sm text-brand-grey mb-4">
+            Find me on these platforms:
+          </p>
+          <SocialLinks />
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="card">
+        <h3 class="text-lg font-bold text-brand-light mb-2">Subscribe</h3>
+        <p class="text-sm text-brand-grey mb-6">
+          Get new articles delivered to your inbox. No spam, just quality technical content.
+        </p>
+        <Newsletter compact />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

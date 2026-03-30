@@ -1,0 +1,54 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  slug: string;
+  heroImage?: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, category, slug, heroImage, tags = [] } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a href={`/blog/${slug}`} class="card group block">
+  {heroImage && (
+    <img
+      src={heroImage}
+      alt={title}
+      class="w-full h-48 object-cover rounded-lg mb-4 -mt-1"
+    />
+  )}
+
+  <div class="flex items-center gap-3 mb-3">
+    <CategoryBadge category={category} />
+    <span class="text-xs text-brand-grey">{formattedDate}</span>
+  </div>
+
+  <h3 class="text-lg font-bold text-brand-light group-hover:text-brand-beige transition-colors mb-2 line-clamp-2">
+    {title}
+  </h3>
+
+  <p class="text-sm text-brand-grey leading-relaxed line-clamp-3">
+    {description}
+  </p>
+
+  {tags.length > 0 && (
+    <div class="flex flex-wrap gap-1.5 mt-4">
+      {tags.slice(0, 3).map((tag) => (
+        <span class="text-xs px-2 py-0.5 rounded bg-brand-muted text-brand-grey">
+          {tag}
+        </span>
+      ))}
+    </div>
+  )}
+</a>

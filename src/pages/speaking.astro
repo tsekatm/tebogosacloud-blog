@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpeakingCard from '../components/SpeakingCard.astro';
+import { getCollection } from 'astro:content';
+
+const allSpeaking = (await getCollection('speaking'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const upcoming = allSpeaking.filter((s) => s.data.upcoming);
+const past = allSpeaking.filter((s) => !s.data.upcoming);
+---
+
+<BaseLayout title="Speaking" description="Conference talks, meetups, webinars, and workshops on cloud architecture, DevOps, and AI engineering.">
+  <section class="container-wide py-16 md:py-24">
+    <div class="mb-12">
+      <h1 class="section-heading text-4xl">Speaking</h1>
+      <p class="section-subheading text-lg mt-3">
+        Conferences, meetups, and workshops where I share what I've learned.
+      </p>
+    </div>
+
+    <!-- Topics I Speak About -->
+    <div class="card mb-12">
+      <h2 class="text-lg font-bold text-brand-light mb-4">Topics I speak about</h2>
+      <div class="flex flex-wrap gap-2">
+        {[
+          'AWS Architecture',
+          'Serverless at Scale',
+          'DevOps & CI/CD',
+          'Multi-Tenant Platforms',
+          'AI/ML on AWS',
+          'Cloud Security',
+          'Engineering Leadership',
+          'Career Growth in Tech',
+        ].map((topic) => (
+          <span class="badge">{topic}</span>
+        ))}
+      </div>
+      <p class="text-sm text-brand-grey mt-4">
+        Interested in having me speak at your event? <a href="/contact" class="link-underline">Get in touch</a>.
+      </p>
+    </div>
+
+    {allSpeaking.length > 0 ? (
+      <>
+        {upcoming.length > 0 && (
+          <div class="mb-12">
+            <h2 class="section-heading text-2xl mb-6">Upcoming</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+              {upcoming.map((talk) => (
+                <SpeakingCard
+                  title={talk.data.title}
+                  event={talk.data.event}
+                  date={talk.data.date}
+                  location={talk.data.location}
+                  type={talk.data.type}
+                  description={talk.data.description}
+                  slidesUrl={talk.data.slidesUrl}
+                  videoUrl={talk.data.videoUrl}
+                  upcoming={true}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {past.length > 0 && (
+          <div>
+            <h2 class="section-heading text-2xl mb-6">Past Talks</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+              {past.map((talk) => (
+                <SpeakingCard
+                  title={talk.data.title}
+                  event={talk.data.event}
+                  date={talk.data.date}
+                  location={talk.data.location}
+                  type={talk.data.type}
+                  description={talk.data.description}
+                  slidesUrl={talk.data.slidesUrl}
+                  videoUrl={talk.data.videoUrl}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </>
+    ) : (
+      <div class="card max-w-lg mx-auto text-center">
+        <p class="text-4xl mb-4">&#127908;</p>
+        <h2 class="text-xl font-bold text-brand-light mb-2">Speaking engagements coming soon</h2>
+        <p class="text-brand-grey">I'm building out my speaking portfolio. Stay tuned.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

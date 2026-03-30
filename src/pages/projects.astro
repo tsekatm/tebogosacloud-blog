@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Projects" description="A portfolio of cloud platforms, tools, and systems I've designed and built.">
+  <section class="container-wide py-16 md:py-24">
+    <div class="mb-12">
+      <h1 class="section-heading text-4xl">Projects</h1>
+      <p class="section-subheading text-lg mt-3">
+        A selection of platforms, tools, and systems I've architected and shipped.
+      </p>
+    </div>
+
+    {allProjects.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            techStack={project.data.techStack}
+            role={project.data.role}
+            year={project.data.year}
+            slug={project.slug}
+            heroImage={project.data.heroImage}
+            liveUrl={project.data.liveUrl}
+            repoUrl={project.data.repoUrl}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="card max-w-lg mx-auto text-center">
+        <p class="text-4xl mb-4">&#128187;</p>
+        <h2 class="text-xl font-bold text-brand-light mb-2">Projects coming soon</h2>
+        <p class="text-brand-grey">I'm documenting my key projects. Check back soon.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

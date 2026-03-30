@@ -1,0 +1,46 @@
+---
+import SocialLinks from './SocialLinks.astro';
+---
+
+<footer class="border-t border-brand-border/50 bg-brand-dark">
+  <div class="container-wide py-12">
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="text-xl font-bold text-brand-light">
+          tebogo<span class="text-brand-beige">.</span>cloud
+        </a>
+        <p class="mt-3 text-sm text-brand-grey leading-relaxed max-w-xs">
+          Cloud architect and engineering leader writing about AWS, DevOps, AI, and the path to senior technical leadership.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-sm font-semibold text-brand-cream uppercase tracking-wider mb-4">Navigate</h4>
+        <div class="flex flex-col gap-2">
+          <a href="/blog" class="text-sm text-brand-grey hover:text-brand-beige transition-colors">Blog</a>
+          <a href="/projects" class="text-sm text-brand-grey hover:text-brand-beige transition-colors">Projects</a>
+          <a href="/speaking" class="text-sm text-brand-grey hover:text-brand-beige transition-colors">Speaking</a>
+          <a href="/about" class="text-sm text-brand-grey hover:text-brand-beige transition-colors">About</a>
+          <a href="/rss.xml" class="text-sm text-brand-grey hover:text-brand-beige transition-colors">RSS Feed</a>
+        </div>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h4 class="text-sm font-semibold text-brand-cream uppercase tracking-wider mb-4">Connect</h4>
+        <SocialLinks />
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-brand-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-xs text-brand-grey">
+        &copy; {new Date().getFullYear()} Tebogo Tseka. All rights reserved.
+      </p>
+      <p class="text-xs text-brand-grey">
+        Built with <a href="https://astro.build" class="text-brand-beige hover:underline" target="_blank" rel="noopener">Astro</a>
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+  event: string;
+  date: Date;
+  location: string;
+  type: string;
+  description: string;
+  slidesUrl?: string;
+  videoUrl?: string;
+  upcoming?: boolean;
+}
+
+const { title, event, date, location, type, description, slidesUrl, videoUrl, upcoming = false } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const typeColors: Record<string, string> = {
+  conference: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  meetup: 'bg-green-500/10 text-green-400 border-green-500/20',
+  webinar: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+  workshop: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+  podcast: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+};
+---
+
+<div class:list={['card relative', upcoming && 'border-brand-beige/40']}>
+  {upcoming && (
+    <span class="absolute -top-3 right-4 px-3 py-1 text-xs font-bold bg-brand-beige text-brand-black rounded-full">
+      UPCOMING
+    </span>
+  )}
+
+  <div class="flex items-center gap-3 mb-3">
+    <span class:list={['inline-block px-2.5 py-0.5 text-xs font-medium rounded-full border', typeColors[type] || 'badge']}>
+      {type}
+    </span>
+    <span class="text-xs text-brand-grey">{formattedDate}</span>
+  </div>
+
+  <h3 class="text-lg font-bold text-brand-light mb-1">{title}</h3>
+  <p class="text-sm text-brand-beige mb-1">{event}</p>
+  <p class="text-xs text-brand-grey mb-3">{location}</p>
+  <p class="text-sm text-brand-grey leading-relaxed">{description}</p>
+
+  {(slidesUrl || videoUrl) && (
+    <div class="flex gap-3 mt-4 pt-3 border-t border-brand-border/50">
+      {slidesUrl && (
+        <a href={slidesUrl} target="_blank" rel="noopener" class="text-sm text-brand-beige hover:text-brand-cream transition-colors">
+          Slides
+        </a>
+      )}
+      {videoUrl && (
+        <a href={videoUrl} target="_blank" rel="noopener" class="text-sm text-brand-beige hover:text-brand-cream transition-colors">
+          Video
+        </a>
+      )}
+    </div>
+  )}
+</div>

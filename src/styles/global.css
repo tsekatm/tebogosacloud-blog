@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-brand-black text-brand-cream font-sans;
+  }
+
+  ::selection {
+    @apply bg-brand-beige/30 text-brand-light;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-dark;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-muted rounded-full;
+  }
+
+  /* Light mode overrides */
+  html.light body {
+    @apply bg-brand-light text-brand-dark;
+  }
+
+  html.light ::selection {
+    @apply bg-brand-beige/50 text-brand-black;
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-6;
+  }
+
+  .container-wide {
+    @apply max-w-6xl mx-auto px-6;
+  }
+
+  .card {
+    @apply bg-brand-card border border-brand-border rounded-xl p-6
+           transition-all duration-300 hover:border-brand-beige/40
+           hover:shadow-lg hover:shadow-brand-beige/5;
+  }
+
+  html.light .card {
+    @apply bg-white border-gray-200 hover:border-brand-beige
+           hover:shadow-brand-beige/10;
+  }
+
+  .badge {
+    @apply inline-block px-3 py-1 text-xs font-medium rounded-full
+           bg-brand-beige/10 text-brand-beige border border-brand-beige/20;
+  }
+
+  html.light .badge {
+    @apply bg-brand-beige/20 text-brand-dark border-brand-beige/30;
+  }
+
+  .link-underline {
+    @apply text-brand-beige underline decoration-brand-beige/30
+           underline-offset-4 hover:decoration-brand-beige
+           transition-colors duration-200;
+  }
+
+  .section-heading {
+    @apply text-2xl md:text-3xl font-bold text-brand-light tracking-tight;
+  }
+
+  html.light .section-heading {
+    @apply text-brand-black;
+  }
+
+  .section-subheading {
+    @apply text-brand-grey mt-2;
+  }
+}

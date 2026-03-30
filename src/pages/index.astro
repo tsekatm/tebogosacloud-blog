@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import BlogCard from '../components/BlogCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const featuredProjects = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <Hero />
+
+  <!-- Recent Posts -->
+  {allPosts.length > 0 && (
+    <section class="container-wide py-20">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="section-heading">Recent Articles</h2>
+          <p class="section-subheading">Thoughts on cloud, code, and leadership</p>
+        </div>
+        <a href="/blog" class="text-sm text-brand-beige hover:text-brand-cream transition-colors hidden md:block">
+          View all &rarr;
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {allPosts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            category={post.data.category}
+            slug={post.slug}
+            heroImage={post.data.heroImage}
+            tags={post.data.tags}
+          />
+        ))}
+      </div>
+
+      <div class="mt-8 text-center md:hidden">
+        <a href="/blog" class="text-sm text-brand-beige hover:text-brand-cream transition-colors">
+          View all articles &rarr;
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="container-wide py-20 border-t border-brand-border/30">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="section-heading">Featured Projects</h2>
+          <p class="section-subheading">Things I've built and shipped</p>
+        </div>
+        <a href="/projects" class="text-sm text-brand-beige hover:text-brand-cream transition-colors hidden md:block">
+          View all &rarr;
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            techStack={project.data.techStack}
+            role={project.data.role}
+            year={project.data.year}
+            slug={project.slug}
+            heroImage={project.data.heroImage}
+            liveUrl={project.data.liveUrl}
+            repoUrl={project.data.repoUrl}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Empty State (when no content yet) -->
+  {allPosts.length === 0 && featuredProjects.length === 0 && (
+    <section class="container-narrow py-20 text-center">
+      <div class="card max-w-lg mx-auto">
+        <p class="text-4xl mb-4">&#9997;</p>
+        <h2 class="text-xl font-bold text-brand-light mb-2">Content coming soon</h2>
+        <p class="text-brand-grey">
+          I'm working on my first articles. Subscribe to the newsletter above to get notified when they drop.
+        </p>
+      </div>
+    </section>
+  )}
+</BaseLayout>

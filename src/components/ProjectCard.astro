@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  techStack: string[];
+  role: string;
+  year: string;
+  slug: string;
+  heroImage?: string;
+  liveUrl?: string;
+  repoUrl?: string;
+}
+
+const { title, description, techStack, role, year, slug, heroImage, liveUrl, repoUrl } = Astro.props;
+---
+
+<div class="card group">
+  {heroImage && (
+    <img
+      src={heroImage}
+      alt={title}
+      class="w-full h-48 object-cover rounded-lg mb-4 -mt-1"
+    />
+  )}
+
+  <div class="flex items-center justify-between mb-3">
+    <span class="text-xs text-brand-beige font-medium uppercase tracking-wider">{role}</span>
+    <span class="text-xs text-brand-grey">{year}</span>
+  </div>
+
+  <h3 class="text-lg font-bold text-brand-light group-hover:text-brand-beige transition-colors mb-2">
+    {title}
+  </h3>
+
+  <p class="text-sm text-brand-grey leading-relaxed mb-4 line-clamp-3">
+    {description}
+  </p>
+
+  <!-- Tech Stack -->
+  <div class="flex flex-wrap gap-1.5 mb-4">
+    {techStack.map((tech) => (
+      <span class="badge text-xs">{tech}</span>
+    ))}
+  </div>
+
+  <!-- Links -->
+  <div class="flex gap-3 pt-2 border-t border-brand-border/50">
+    <a href={`/projects/${slug}`} class="text-sm text-brand-beige hover:text-brand-cream transition-colors">
+      Read more &rarr;
+    </a>
+    {liveUrl && (
+      <a href={liveUrl} target="_blank" rel="noopener" class="text-sm text-brand-grey hover:text-brand-cream transition-colors">
+        Live
+      </a>
+    )}
+    {repoUrl && (
+      <a href={repoUrl} target="_blank" rel="noopener" class="text-sm text-brand-grey hover:text-brand-cream transition-colors">
+        Code
+      </a>
+    )}
+  </div>
+</div>
