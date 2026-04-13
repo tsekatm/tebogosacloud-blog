@@ -99,6 +99,8 @@ This is the gate. Before an agent is considered liftable, it has unit tests for 
 
 The lift checklist is not a formality. It is the reason the promotion is low risk when it happens.
 
+![The Liftability Gate — five criteria that must all be true before an agent is promoted to production](/diagrams/liftability-gate.svg)
+
 ---
 
 ## Skills and Tools: The Real Unit of Capability
@@ -116,6 +118,8 @@ This has practical consequences:
 **Skills define the production surface area.** When I lift an agent to Bedrock AgentCore, what I am deploying is a set of Lambda functions — one per skill — registered as tools. The AgentCore runtime is thin. The Lambda functions are where the real work happens. Scaling, monitoring, and cost governance apply at the skill level, not the agent level.
 
 **New capability means a new skill, not a new agent.** When I need the production agent to do something new, I write a skill, test it locally, and register it as a new tool in AgentCore. The operational surface stays flat even as capability grows.
+
+![Skills as the unit of capability — one skill shared across agents, deployed as a single Lambda in production](/diagrams/skills-unit-of-capability.svg)
 
 ---
 

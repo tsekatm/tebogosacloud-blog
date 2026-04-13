@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" width="700" height="480" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <!-- Background -->
+  <rect width="700" height="480" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="350" y="36" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.5">Skills: The Real Unit of Capability</text>
+  <text x="350" y="56" text-anchor="middle" fill="#94a3b8" font-size="12">One skill. Written once. Tested once. Shared across agents. Deployed as Lambda.</text>
+
+  <!-- LOCAL DEVELOPMENT label -->
+  <rect x="40" y="72" width="620" height="200" fill="#1e293b" rx="10" stroke="#334155" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="58" y="91" fill="#64748b" font-size="11" font-weight="600" letter-spacing="1">LOCAL DEVELOPMENT</text>
+
+  <!-- Agent 1: Cloud Security -->
+  <rect x="70" y="100" width="190" height="64" fill="#1e3a5f" rx="8" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="165" y="126" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Cloud Security Agent</text>
+  <text x="165" y="145" text-anchor="middle" fill="#64748b" font-size="10.5">threat models · IAM · WAF</text>
+
+  <!-- Agent 2: Peer Review -->
+  <rect x="440" y="100" width="190" height="64" fill="#1e3a5f" rx="8" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="535" y="126" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Peer Review Agent</text>
+  <text x="535" y="145" text-anchor="middle" fill="#64748b" font-size="10.5">anti-patterns · best practices · severity</text>
+
+  <!-- Agent 3: GenAI Engineer (faded, showing extensibility) -->
+  <rect x="270" y="100" width="160" height="64" fill="#161f2e" rx="8" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="350" y="122" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">+ 18 more agents</text>
+  <text x="350" y="140" text-anchor="middle" fill="#334155" font-size="10">any can share skills</text>
+
+  <!-- Arrows from agents to skill -->
+  <!-- From Cloud Security -->
+  <line x1="165" y1="164" x2="270" y2="218" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <polygon points="264,213 276,213 270,225" fill="#3b82f6"/>
+
+  <!-- From Peer Review -->
+  <line x1="535" y1="164" x2="430" y2="218" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <polygon points="424,213 436,213 430,225" fill="#3b82f6"/>
+
+  <!-- Shared Skill box -->
+  <rect x="240" y="220" width="220" height="58" fill="#1c1917" rx="8" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="245" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700">IAM_Least_Privilege</text>
+  <text x="350" y="264" text-anchor="middle" fill="#78716c" font-size="10.5">.skill.md  ·  pytest tests/  ·  ABC class</text>
+
+  <!-- Labels on arrows -->
+  <text x="192" y="198" fill="#475569" font-size="10" transform="rotate(-22, 192, 198)">uses</text>
+  <text x="466" y="198" fill="#475569" font-size="10" transform="rotate(22, 466, 198)">uses</text>
+
+  <!-- Arrow down to production -->
+  <line x1="350" y1="278" x2="350" y2="304" stroke="#f59e0b" stroke-width="2"/>
+  <polygon points="343,304 357,304 350,316" fill="#f59e0b"/>
+
+  <!-- PRODUCTION label -->
+  <rect x="40" y="316" width="620" height="136" fill="#0a1628" rx="10" stroke="#1e3a5f" stroke-width="1.5"/>
+  <text x="58" y="336" fill="#334155" font-size="11" font-weight="600" letter-spacing="1">AWS BEDROCK AGENTCORE — PRODUCTION</text>
+
+  <!-- Lambda box -->
+  <rect x="240" y="346" width="220" height="58" fill="#1e293b" rx="8" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="350" y="371" text-anchor="middle" fill="#4ade80" font-size="13" font-weight="700">Lambda Function</text>
+  <text x="350" y="390" text-anchor="middle" fill="#64748b" font-size="10.5">registered as tool in AgentCore</text>
+
+  <!-- Bottom note -->
+  <text x="350" y="434" text-anchor="middle" fill="#475569" font-size="11">New capability = new skill + new Lambda. Not a new agent runtime.</text>
+  <text x="350" y="452" text-anchor="middle" fill="#334155" font-size="10.5">Operational surface stays flat as capability grows.</text>
+</svg>

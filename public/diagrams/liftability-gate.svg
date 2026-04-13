@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" width="640" height="520" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <!-- Background -->
+  <rect width="640" height="520" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="320" y="38" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.5">The Liftability Gate</text>
+  <text x="320" y="58" text-anchor="middle" fill="#94a3b8" font-size="12">All five must be true before an agent is promoted to production</text>
+
+  <!-- Criteria items -->
+  <!-- Item 1 -->
+  <rect x="60" y="80" width="520" height="62" fill="#1e293b" rx="8" stroke="#334155" stroke-width="1"/>
+  <circle cx="100" cy="111" r="16" fill="#022c22" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="100" y="116" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="700">✓</text>
+  <text x="130" y="104" fill="#f1f5f9" font-size="13" font-weight="600">MCP Facade in place</text>
+  <text x="130" y="122" fill="#94a3b8" font-size="11.5">Tools exposed as MCP endpoints — same interface locally and in AgentCore</text>
+
+  <!-- Item 2 -->
+  <rect x="60" y="154" width="520" height="62" fill="#1e293b" rx="8" stroke="#334155" stroke-width="1"/>
+  <circle cx="100" cy="185" r="16" fill="#022c22" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="100" y="190" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="700">✓</text>
+  <text x="130" y="178" fill="#f1f5f9" font-size="13" font-weight="600">OOP ABCs implemented</text>
+  <text x="130" y="196" fill="#94a3b8" font-size="11.5">Each skill is a Python class inheriting from an abstract base — independently testable</text>
+
+  <!-- Item 3 -->
+  <rect x="60" y="228" width="520" height="62" fill="#1e293b" rx="8" stroke="#334155" stroke-width="1"/>
+  <circle cx="100" cy="259" r="16" fill="#022c22" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="100" y="264" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="700">✓</text>
+  <text x="130" y="252" fill="#f1f5f9" font-size="13" font-weight="600">Terraform written</text>
+  <text x="130" y="270" fill="#94a3b8" font-size="11.5">Lambda, IAM, API Gateway, DynamoDB defined — terraform apply is the deployment</text>
+
+  <!-- Item 4 -->
+  <rect x="60" y="302" width="520" height="62" fill="#1e293b" rx="8" stroke="#334155" stroke-width="1"/>
+  <circle cx="100" cy="333" r="16" fill="#022c22" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="100" y="338" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="700">✓</text>
+  <text x="130" y="326" fill="#f1f5f9" font-size="13" font-weight="600">Artifacts in S3</text>
+  <text x="130" y="344" fill="#94a3b8" font-size="11.5">Agent definitions, skill configs, prompt templates stored in S3 — promotion is a sync</text>
+
+  <!-- Item 5 -->
+  <rect x="60" y="376" width="520" height="62" fill="#1e293b" rx="8" stroke="#334155" stroke-width="1"/>
+  <circle cx="100" cy="407" r="16" fill="#022c22" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="100" y="412" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="700">✓</text>
+  <text x="130" y="400" fill="#f1f5f9" font-size="13" font-weight="600">Tested end-to-end locally</text>
+  <text x="130" y="418" fill="#94a3b8" font-size="11.5">Unit tests per skill + integration tests via API proxy + golden test cases</text>
+
+  <!-- Arrow down -->
+  <line x1="320" y1="446" x2="320" y2="462" stroke="#16a34a" stroke-width="2" stroke-dasharray="4,2"/>
+  <polygon points="313,462 327,462 320,474" fill="#16a34a"/>
+
+  <!-- Result badge -->
+  <rect x="200" y="478" width="240" height="34" fill="#16a34a" rx="17"/>
+  <text x="320" y="500" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="1">LIFTABLE — terraform apply</text>
+</svg>
