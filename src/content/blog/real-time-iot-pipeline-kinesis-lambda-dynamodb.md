@@ -37,6 +37,8 @@ Device Simulator (Python)
 
 Three components. Each one does exactly one thing.
 
+In a telecoms context, these sensors monitor cabinet temperatures at cell tower sites, humidity in outdoor street-cabinet enclosures, and power supply metrics at edge nodes. The same pipeline pattern applies equally to network KPIs — signal strength, packet loss, handover failure rates — anywhere you need a low-latency path from raw telemetry to an ops team notification.
+
 ---
 
 ## Step 1: Device Simulator
@@ -297,9 +299,22 @@ resource "aws_dynamodb_table" "sensor_readings" {
     type = "S"
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "high_anomaly_rate" {
+  alarm_name          = "iot-high-anomaly-rate"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "AnomalyCount"
+  namespace           = "IoTPipeline/Alerts"
+  period              = 3600    # 1 hour
+  statistic           = "Sum"
+  threshold           = 5
+  alarm_description   = "More than 5 anomalies per device per hour"
+  alarm_actions       = [aws_sns_topic.iot_alerts.arn]
+}
 ```
 
-`bisect_batch_on_function_error = true` paired with `ReportBatchItemFailures` response type gives you fine-grained retry — Kinesis will bisect failing batches until it isolates the exact bad record.
+`bisect_batch_on_function_error = true` paired with `ReportBatchItemFailures` response type gives you fine-grained retry — Kinesis will bisect failing batches until it isolates the exact bad record. The CloudWatch alarm closes the loop: anomalies flow from Lambda → CloudWatch metric → alarm → SNS page, all in Terraform.
 
 ---
 
@@ -309,6 +324,8 @@ resource "aws_dynamodb_table" "sensor_readings" {
 - **Dead letter queue** — SQS DLQ for alert handler failures so no alert is silently dropped
 - **Kinesis Data Analytics** — SQL-based tumbling window aggregations for fleet-wide statistics
 - **Device shadow** — track last-known state per device for context-aware alerting (only alert if device was previously healthy)
+- **NMS integration** — feed anomaly events into a network management system for correlated alerting across cell sites, linking environmental faults to degraded radio KPIs
+- **Edge inference with IoT Greengrass** — run threshold detection on the tower itself for latency-sensitive alerting without a round-trip to the cloud, critical for 5G edge deployments
 
 ---
 
