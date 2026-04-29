@@ -25,10 +25,10 @@ Lambda: trigger_retraining
         │
         ▼
 SageMaker Pipeline
-  ├── Step 1: PreprocessData   → encode, scale, split
-  ├── Step 2: TrainModel       → SKLearn estimator
-  ├── Step 3: EvaluateModel    → writes evaluation.json
-  └── Step 4: CheckAccuracy    → ROC-AUC ≥ 0.80?
+  ├── Phase 1: PreprocessData   → encode, scale, split
+  ├── Phase 2: TrainModel       → SKLearn estimator
+  ├── Phase 3: EvaluateModel    → writes evaluation.json
+  └── Phase 4: CheckAccuracy    → ROC-AUC ≥ 0.80?
            ├── YES → RegisterModel (PendingManualApproval)
            └── NO  → skip registration
 
@@ -42,7 +42,7 @@ The whole pipeline is infrastructure-as-code (Terraform), parameterised, and tes
 
 ---
 
-## Step 1: The Pipeline Definition
+## Phase 1: The Pipeline Definition
 
 SageMaker Pipelines SDK lets you define a DAG of steps in Python. The pipeline object is then serialised to JSON and pushed to SageMaker, which manages execution, retry, and lineage tracking.
 
@@ -70,13 +70,13 @@ def create_pipeline() -> Pipeline:
         code="pipeline/preprocess.py",
     )
 
-    # ... training_step, evaluation_step ...
+    # ... training_step, evaluation_step setup omitted for brevity — see pipeline.py in the repo
 
     condition_step = ConditionStep(
         name="CheckAccuracy",
         conditions=[ConditionGreaterThanOrEqualTo(
             left=JsonGet(step_name="EvaluateModel", property_file=evaluation_report,
-                         json_path="metrics.accuracy.value"),
+                         json_path="metrics.accuracy.value"),  # accuracy chosen: simpler threshold, business-readable
             right=accuracy_threshold,
         )],
         if_steps=[register_step],
@@ -90,11 +90,13 @@ def create_pipeline() -> Pipeline:
     )
 ```
 
-A key design decision: every meaningful value — instance types, thresholds, data paths — is a `ParameterString` or `ParameterFloat`. This means the Lambda trigger can override any of them per execution without touching the pipeline definition.
+Every meaningful value — instance types, thresholds, data paths — is a `ParameterString` or `ParameterFloat`. The Lambda trigger can override any of them per execution without touching the pipeline definition.
+
+> **Why accuracy and not ROC-AUC for gating?** ROC-AUC is the better model quality metric (as argued in [Part 1](/blog/predicting-telecom-churn-sklearn-keras-sagemaker)), but SageMaker ConditionalStep thresholds need to be intuitive for non-ML stakeholders who approve deployments. "Accuracy must exceed 80%" is easier to explain in a business review than an AUC threshold. You can always swap `metrics.accuracy.value` → `metrics.roc_auc.value` and adjust the threshold.
 
 ---
 
-## Step 2: Preprocessing with Synthetic Fallback
+## Phase 2: Preprocessing with Synthetic Fallback
 
 The preprocessing script has to run inside a SageMaker Processing container, so it can't assume anything about the environment. I built in a synthetic data fallback so the pipeline can run end-to-end even before real production data exists:
 
@@ -123,7 +125,7 @@ Two details worth noting:
 
 ---
 
-## Step 3: Evaluation Report
+## Phase 3: Evaluation Report
 
 The evaluation step writes a JSON file that the ConditionalStep reads. This is how SageMaker Pipelines communicates metric values between steps:
 
@@ -155,7 +157,7 @@ The `PropertyFile` in the pipeline definition tells SageMaker where to find this
 
 ---
 
-## Step 4: Automated Retraining via EventBridge
+## Phase 4: Automated Retraining via EventBridge
 
 The Lambda trigger is intentionally simple — it just maps the incoming event to SageMaker pipeline parameters and starts an execution:
 
@@ -191,7 +193,7 @@ EventBridge fires this on a daily schedule. It can also be invoked on demand —
 
 ---
 
-## Step 5: Drift Monitoring
+## Phase 5: Drift Monitoring
 
 This is the part that actually keeps the model honest. The monitoring Lambda runs separately on a schedule and checks two things:
 
@@ -350,3 +352,4 @@ Previous post (model training + endpoint deployment): [Predicting Telecom Custom
 ---
 
 **Tebogo Tseka** — Cloud Solutions Architect & ML Engineer
+GitHub: [@tsekatm](https://github.com/tsekatm) | Blog: [tebogosacloud.blog](https://tebogosacloud.blog)
