@@ -118,6 +118,10 @@ MODEL_CARD = {
 
 The `governance_tier` and `eu_ai_act_classification` fields are what a risk committee actually needs. A CI gate could fail a deployment if these fields are missing or if `next_review` is in the past.
 
+In a telecoms context, POPIA (South Africa) and RICA compliance add additional constraints on what customer data can flow through inference pipelines, making PII-aware audit logging essential. The audit log here records features and predictions but not raw PII — in production, `customer_id` would be a pseudonymised identifier resolved only by authorised downstream systems.
+
+The fairness metrics (`demographic_parity_difference`, `equalized_odds_difference`) are hardcoded for this demo. In production, they are computed during the evaluation step of the SageMaker Pipeline (see Part 2 of this series) against protected attributes and updated automatically per training run before the model card is published.
+
 ### Audit Log (`GET /governance/audit-log`)
 
 ```python
@@ -290,11 +294,54 @@ kubectl get hpa     # watch scaling events
 
 ---
 
+## Step 6: Infrastructure (Terraform)
+
+The EKS cluster is provisioned with Terraform — nothing clicked in the console.
+
+```hcl
+module "eks" {
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "~> 20.0"
+  cluster_name    = "ai-governance-cluster"
+  cluster_version = "1.30"
+  vpc_id          = module.vpc.vpc_id
+  subnet_ids      = module.vpc.private_subnets
+
+  eks_managed_node_groups = {
+    general = {
+      instance_types = ["m5.large"]
+      min_size       = 2
+      max_size       = 6
+      desired_size   = 3
+    }
+  }
+
+  enable_irsa = true    # IAM Roles for Service Accounts — pods get AWS creds without node-level keys
+}
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+  name    = "ai-governance-vpc"
+  cidr    = "10.0.0.0/16"
+
+  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+}
+```
+
+`enable_irsa = true` provisions the OIDC provider so the `ai-platform-sa` service account (created by Helm) can assume an IAM role for DynamoDB and CloudWatch access — no static AWS credentials in the pod.
+
+---
+
 ## What I'd Add Next
 
 - **SageMaker endpoint** — replace the in-memory model with `boto3.client("sagemaker-runtime").invoke_endpoint()`, zero governance layer changes needed
 - **DynamoDB audit store** — replace the in-memory list with a DynamoDB table (`model_id + timestamp` key), enables cross-pod audit queries
-- **Bedrock Guardrails** — add content filtering on the inference input before it hits the model
+- **Bedrock Guardrails** — content filtering and PII redaction on inference inputs before they hit the model; a pattern I've already implemented in production for prompt injection prevention
 - **CI gate on model card** — fail deployment if `next_review` is expired or `governance_tier` is missing
 - **Prometheus metrics** — `prediction_count`, `churn_rate`, `p99_latency` scraped by CloudWatch Container Insights
 
