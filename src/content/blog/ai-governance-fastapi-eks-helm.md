@@ -2,7 +2,7 @@
 title: "AI Governance in Practice: FastAPI on EKS with Model Cards, Audit Logging, and Helm"
 description: "How I built an AI governance platform on AWS EKS — FastAPI inference endpoint with per-request audit logging, model card endpoint, fairness metadata, and Helm-packaged deployment with HPA."
 pubDate: 2026-04-29
-category: "Cloud Engineering"
+category: "AWS & Cloud Architecture"
 tags: ["aws", "kubernetes", "python", "mlops"]
 draft: false
 ---

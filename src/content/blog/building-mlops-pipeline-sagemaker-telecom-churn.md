@@ -2,7 +2,7 @@
 title: "Building a Production MLOps Pipeline on AWS SageMaker for Telecom Churn"
 description: "How I built an end-to-end MLOps pipeline with SageMaker Pipelines, automated retraining via EventBridge, and drift monitoring using KS tests and CloudWatch — for a telecom churn use case."
 pubDate: 2026-04-29
-category: "Machine Learning & MLOps"
+category: "AWS & Cloud Architecture"
 tags: ["mlops", "aws", "sagemaker", "python", "telecom"]
 draft: false
 ---

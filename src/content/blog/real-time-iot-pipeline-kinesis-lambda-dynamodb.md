@@ -2,7 +2,7 @@
 title: "Building a Real-Time IoT Telemetry Pipeline with Kinesis, Lambda, and DynamoDB"
 description: "How I built a real-time IoT data pipeline on AWS — device simulator → Kinesis stream → Lambda consumer → DynamoDB — with anomaly detection that fires SNS alerts and CloudWatch metrics."
 pubDate: 2026-04-29
-category: "Cloud Engineering"
+category: "AWS & Cloud Architecture"
 tags: ["aws", "iot", "kinesis", "lambda", "python"]
 draft: false
 ---

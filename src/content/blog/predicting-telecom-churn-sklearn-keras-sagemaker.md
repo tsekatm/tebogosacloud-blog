@@ -2,7 +2,7 @@
 title: "Predicting Telecom Customer Churn with scikit-learn, Keras, and Amazon SageMaker"
 description: "Learn how to build a telecom customer churn predictor using Random Forest, Keras neural networks, and deploy it to a real-time SageMaker endpoint. Full code included."
 pubDate: 2026-04-29
-category: "Machine Learning & MLOps"
+category: "AWS & Cloud Architecture"
 tags: ["machinelearning", "aws", "sagemaker", "python", "telecom"]
 draft: false
 ---
