@@ -180,7 +180,7 @@ A few architectural choices:
 
 ---
 
-## Step 3: Results
+## Step 3: Model Evaluation & Comparison
 
 Running `python src/train.py --data data/raw/churn.csv --output models/` produces:
 
@@ -203,6 +203,8 @@ Some observations:
 - **Decision Tree** is the weakest but still achieves ROC-AUC 0.82, which is respectable and fully interpretable — useful for explaining predictions to business stakeholders.
 
 For a real telecoms deployment, I would use the **Keras NN for scoring** (maximise recall for retention offers) and the **Decision Tree for explainability** (show why a specific customer was flagged).
+
+For deployment, I chose **Random Forest** over Keras NN despite the marginal ROC-AUC difference (0.8453 vs 0.8454). Random Forest offers simpler packaging (joblib serialisation vs TensorFlow SavedModel), faster cold-start inference on SageMaker, and better interpretability for business stakeholders — a practical trade-off in production.
 
 ---
 
@@ -265,6 +267,8 @@ This pipeline is a solid foundation. From here, you could:
 - **Build a SageMaker Pipeline** for automated retraining when new monthly data arrives
 - **Wire up a retention campaign API** — when the endpoint returns probability > 0.7, trigger an offer via your CRM
 - **Add Model Monitor** to detect data drift when real customer behaviour shifts
+- **Integrate with CDR (Call Detail Records)** for real-time churn scoring at the network edge
+- **Connect predictions to CRM retention workflows** for automated intervention triggers
 
 ---
 
@@ -280,5 +284,5 @@ This pipeline is a solid foundation. From here, you could:
 
 ---
 
-*Built and written by **Tebogo Tseka** — Cloud Solutions Architect & ML Engineer*
-*GitHub: [@tsekatm](https://github.com/tsekatm) | Blog: [tebogosacloud.blog](https://tebogosacloud.blog)*
+**Tebogo Tseka** — Cloud Solutions Architect & ML Engineer
+GitHub: [@tsekatm](https://github.com/tsekatm) | Blog: [tebogosacloud.blog](https://tebogosacloud.blog)
